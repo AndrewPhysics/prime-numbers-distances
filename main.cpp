@@ -1,15 +1,50 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
+//function prototypes
+int getNumber();
+int primeFinder(int numberToScan);
+int primeNumberSorter(int* pArray, int upperLimit);
+int calculatePrimeDistances(int* pArray, int numberOfPrimes, int* pDistanceArray);
+void writePrimeDistancesToFile(int* pDistanceArray, int count);
+void analizeDistances(int* pDistanceArray,int distanceCount, int upperLimit, int* pValueCounterArray);
+
+
+
+
+int main()
+{
+    int upperLimit = getNumber();
+    int* pArray = new int[upperLimit];
+
+    int numberOfPrimes = primeNumberSorter(pArray, upperLimit);
+    cout << "---" << endl;
+
+    int* pDistanceArray = new int[numberOfPrimes - 1];
+
+    int distanceCount = calculatePrimeDistances(pArray, numberOfPrimes, pDistanceArray);
+
+    writePrimeDistancesToFile(pDistanceArray, distanceCount);
+
+    int* pValueCounterArray = new int[distanceCount];
+
+    analizeDistances(pDistanceArray, distanceCount, upperLimit, pValueCounterArray);
+
+
+    delete[] pArray;
+    delete[] pDistanceArray;
+    delete[] pValueCounterArray;
+}
 
 int getNumber()
 {
     int upperLimit = 0;
-    cout<<"Please type upper limit of interval to be investigated!"<<endl;
+    cout << "Please type upper limit of interval to be investigated!" << endl;
     cin >> upperLimit;
     return upperLimit;
 }
 
-int primeFinder(int numberToScan) 
+int primeFinder(int numberToScan)
 {
     int divisor = 2;
     while (divisor <= numberToScan)
@@ -33,59 +68,85 @@ int primeFinder(int numberToScan)
 int primeNumberSorter(int* pArray, int upperLimit)
 {
     int i = 2;
+    int index = 1;
     int j = 0;
-    int c = 0;
     cout << "Zero means current number is not prime!" << endl;
     int container = 0;
     while (i < upperLimit)
     {
         container = primeFinder(i);
-        cout <<j+1<<". " << container << endl;
+        cout << index << ". " << container << endl;
         if (container != 0)
         {
-            pArray[c] = container;
-            c++;
+            pArray[j] = container;
+            j++;
         }
         i++;
-        j++;
+        index++;
     }
     cout << "---" << endl;
-    int count = c;
+    int count = j;
     i = 0;
     while (i < count)
     {
-        cout <<i+1<<". " << pArray[i] << endl;
+        cout << i + 1 << ". " << pArray[i] << endl;
         i++;
     }
     cout << "number of primes found: " << count << endl;
     return count;
 }
-
-void calculatePrimeDistances(int* pArray, int NumberOfPrimes) 
+//pArray containes prime numbers
+int calculatePrimeDistances(int* pArray, int numberOfPrimes, int* pDistanceArray)
 {
-    int* pDistanceArray = new int[NumberOfPrimes-1];
+    cout << "Calculated distances between primes: " << endl;
     int distanceContainer = 0;
     int i = 0;
     int j = 0;
-    while (i<NumberOfPrimes-1)
+    while (i < numberOfPrimes - 1)
     {
-        distanceContainer = pArray[i+1] - pArray[i];
+        distanceContainer = pArray[i + 1] - pArray[i];//Calculate distance
         pDistanceArray[j] = distanceContainer;
-        cout <<i+1<<". " << pDistanceArray[j] << endl;
+        cout << i + 1 << ". " << pDistanceArray[j] << endl;
         i++;
         j++;
     }
-    int count = NumberOfPrimes - 1;
+    int count = numberOfPrimes - 1;
     cout << "number of distances calculated: " << count << endl;
-    delete[] pDistanceArray;
+    cout << "---" << endl;
+    return count;
+}
+void writePrimeDistancesToFile(int* pDistanceArray, int count)
+{
+    ofstream outPut;
+    outPut.open("distances.txt");
+    int i = 0;
+    while (i < count)
+    {
+        outPut << pDistanceArray[i] << endl;
+        i++;
+    }
+    outPut.close();
 }
 
-int main()
+void analizeDistances(int* pDistanceArray, int distanceCount, int upperLimit, int* pValueCounterArray)
 {
-    int upperLimit = getNumber();
-    int* pArray = new int[upperLimit];
-    int numberOfPrimes = primeNumberSorter(pArray, upperLimit);
-    cout << "---" << endl;
-    calculatePrimeDistances(pArray, numberOfPrimes);
-    delete[] pArray;
+    //azt kellene megkeresesni, hogy melyik számból hány van!
+    int i = 0;
+    while (i<distanceCount)
+    {
+        pValueCounterArray[i] = 0;
+        i++;
+    }
+    i = 0;
+    int index = 0;
+    while (i< distanceCount)
+    {
+        pValueCounterArray[pDistanceArray[i]]++;
+        cout << index<<"-bol " << pValueCounterArray[i] <<" db van!" << endl;
+        index++;
+        i++;
+    }
 }
+
+
+
