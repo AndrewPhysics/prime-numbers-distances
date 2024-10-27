@@ -7,7 +7,8 @@ int primeFinder(int numberToScan);
 int primeNumberSorter(int* pArray, int upperLimit);
 int calculatePrimeDistances(int* pArray, int numberOfPrimes, int* pDistanceArray);
 void writePrimeDistancesToFile(int* pDistanceArray, int count);
-void analizeDistances(int* pDistanceArray,int distanceCount, int upperLimit, int* pValueCounterArray);
+void countOccurrences(int* pDistanceArray, int distanceCount, int* pValueCounterArray, int upperLimit);
+void countOccurrences2(int* pDistanceArray, int distanceCount, int* pValueCounterArray, int upperLimit);
 
 
 
@@ -24,11 +25,11 @@ int main()
 
     int distanceCount = calculatePrimeDistances(pArray, numberOfPrimes, pDistanceArray);
 
-    writePrimeDistancesToFile(pDistanceArray, distanceCount);
+    //writePrimeDistancesToFile(pDistanceArray, distanceCount);
 
     int* pValueCounterArray = new int[distanceCount];
 
-    analizeDistances(pDistanceArray, distanceCount, upperLimit, pValueCounterArray);
+    countOccurrences(pDistanceArray, distanceCount, pValueCounterArray, upperLimit);
 
 
     delete[] pArray;
@@ -95,7 +96,7 @@ int primeNumberSorter(int* pArray, int upperLimit)
     cout << "number of primes found: " << count << endl;
     return count;
 }
-//pArray containes prime numbers
+//The pArray contains the prime numbers found.
 int calculatePrimeDistances(int* pArray, int numberOfPrimes, int* pDistanceArray)
 {
     cout << "Calculated distances between primes: " << endl;
@@ -104,7 +105,7 @@ int calculatePrimeDistances(int* pArray, int numberOfPrimes, int* pDistanceArray
     int j = 0;
     while (i < numberOfPrimes - 1)
     {
-        distanceContainer = pArray[i + 1] - pArray[i];//Calculate distance
+        distanceContainer = pArray[i + 1] - pArray[i];//Calculating the distance between two consecutive prime numbers.
         pDistanceArray[j] = distanceContainer;
         cout << i + 1 << ". " << pDistanceArray[j] << endl;
         i++;
@@ -128,25 +129,108 @@ void writePrimeDistancesToFile(int* pDistanceArray, int count)
     outPut.close();
 }
 
-void analizeDistances(int* pDistanceArray, int distanceCount, int upperLimit, int* pValueCounterArray)
+void countOccurrences(int* pDistanceArray, int distanceCount, int* pValueCounterArray, int upperLimit)
 {
-    //azt kellene megkeresesni, hogy melyik számból hány van!
+    //Azt kellene megkeresni, hogy az egyes távolságoknak milyen az előfordulása
+    //Azt nézem meg, hogy előfoul-e a j értéke a pDistanceArray- ben
+
+    //mibe keresek? pDistanceArray
+    //méret: distanceCount
+
+    //mibe tárolom az eredményt? pValueCounterArray
+    //méret: ?
+
+    cout << "***" << endl;
+    cout <<"distanceCount = "<< distanceCount << endl;
+
+    int number = 0;
     int i = 0;
-    while (i<distanceCount)
+    int j = 0;
+    while (j<distanceCount)
     {
-        pValueCounterArray[i] = 0;
+        i = 0;
+        while (i < distanceCount)
+        {
+            if (pDistanceArray[i] == number)
+            {
+                cout << "kkk:" <<number<< endl;
+                pValueCounterArray[number]++;
+                
+            }
+            
+            i++;
+        }
+        number++;
+        j++;
+    }
+
+    cout << "zzz" << endl;
+
+    i = 0;
+    while ( i < distanceCount)
+    {
+        cout << pValueCounterArray[i] << endl;
         i++;
     }
+
+    //idáig működik
+
+
+
+
+    /*
+        int i = 0;
+        while (i < distanceCount)
+        {
+            if (pDistanceArray[i]==j)
+            {
+                pValueCounterArray[j]++;
+            }
+            i++;
+        }
+    */
+
+    //ha kész van a keresés:
+
+    /*
     i = 0;
     int index = 0;
-    while (i< distanceCount)
+    while (i < distanceCount)
     {
-        pValueCounterArray[pDistanceArray[i]]++;
-        cout << index<<"-bol " << pValueCounterArray[i] <<" db van!" << endl;
+        cout << index << "-bol " << pValueCounterArray[i] << " db van!" << endl;
         index++;
         i++;
     }
+    */
 }
 
 
 
+
+
+
+void countOccurrences2(int* pDistanceArray, int distanceCount, int* pValueCounterArray, int upperLimit)
+{
+
+
+    int i = 0;
+    int number = 1;
+    while (i < distanceCount)
+    {
+        if (pDistanceArray[i]==number)
+        {
+            cout << "x" << endl;
+            pValueCounterArray[number] = pValueCounterArray[number] + 1;
+        }
+        i++;
+    }
+
+    i = 0;
+    while (i<distanceCount)
+    {
+        cout << pValueCounterArray[i] << endl;
+        i++;
+    }
+
+
+}
