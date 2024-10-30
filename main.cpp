@@ -7,8 +7,11 @@ int primeFinder(int numberToScan);
 int primeNumberSorter(int* pArray, int upperLimit);
 int calculatePrimeDistances(int* pArray, int numberOfPrimes, int* pDistanceArray);
 void writePrimeDistancesToFile(int* pDistanceArray, int count);
-void countOccurrences(int* pDistanceArray, int distanceCount, int* pValueCounterArray, int upperLimit);
-void countOccurrences2(int* pDistanceArray, int distanceCount, int* pValueCounterArray, int upperLimit);
+int szamoloFuggveny(int* pDistanceArray, int vizsgalt_szam, int distanceCount);
+void segedFuggveny(int* pDistanceArray, int distanceCount, int* dinamikusTomb, int upperLimit);
+void readArray(int kiindulasi_tomb[], int size);
+
+
 
 
 
@@ -29,8 +32,10 @@ int main()
 
     int* pValueCounterArray = new int[distanceCount];
 
-    countOccurrences(pDistanceArray, distanceCount, pValueCounterArray, upperLimit);
 
+    segedFuggveny(pDistanceArray, distanceCount, pValueCounterArray, upperLimit);
+
+    readArray(pValueCounterArray, upperLimit);
 
     delete[] pArray;
     delete[] pDistanceArray;
@@ -129,108 +134,45 @@ void writePrimeDistancesToFile(int* pDistanceArray, int count)
     outPut.close();
 }
 
-void countOccurrences(int* pDistanceArray, int distanceCount, int* pValueCounterArray, int upperLimit)
+
+
+int szamoloFuggveny(int* pDistanceArray, int vizsgalt_szam, int distanceCount)
 {
-    //Azt kellene megkeresni, hogy az egyes távolságoknak milyen az előfordulása
-    //Azt nézem meg, hogy előfoul-e a j értéke a pDistanceArray- ben
-
-    //mibe keresek? pDistanceArray
-    //méret: distanceCount
-
-    //mibe tárolom az eredményt? pValueCounterArray
-    //méret: ?
-
-    cout << "***" << endl;
-    cout <<"distanceCount = "<< distanceCount << endl;
-
-    int number = 0;
+    int size = distanceCount;
     int i = 0;
-    int j = 0;
-    while (j<distanceCount)
+    int count = 0;
+    while (i < size)//Megszámolja egy adott szám előfordulását
     {
-        i = 0;
-        while (i < distanceCount)
+        if (pDistanceArray[i] == vizsgalt_szam)
         {
-            if (pDistanceArray[i] == number)
-            {
-                cout << "kkk:" <<number<< endl;
-                pValueCounterArray[number]++;
-                
-            }
-            
-            i++;
+            count++;
         }
-        number++;
-        j++;
-    }
-
-    cout << "zzz" << endl;
-
-    i = 0;
-    while ( i < distanceCount)
-    {
-        cout << pValueCounterArray[i] << endl;
         i++;
     }
-
-    //idáig működik
-
-
-
-
-    /*
-        int i = 0;
-        while (i < distanceCount)
-        {
-            if (pDistanceArray[i]==j)
-            {
-                pValueCounterArray[j]++;
-            }
-            i++;
-        }
-    */
-
-    //ha kész van a keresés:
-
-    /*
-    i = 0;
-    int index = 0;
-    while (i < distanceCount)
+    return count;
+}
+void segedFuggveny(int* pDistanceArray, int distanceCount, int* dinamikusTomb, int upperLimit)
+{
+    int size1 = distanceCount;
+    int size2 = upperLimit;
+    int vizsgalt_szam = 0;
+    while (vizsgalt_szam < size2)
     {
-        cout << index << "-bol " << pValueCounterArray[i] << " db van!" << endl;
-        index++;
-        i++;
+        //trükk: A vizsgált szám változónak 2 szerepe van:
+        //1. átadjuk a számoló függvénynek mint keresett értéket
+        //2. indexeli a dinamikus tömböt
+        //3. ciklus változóként is felhasználjuk
+        dinamikusTomb[vizsgalt_szam] = szamoloFuggveny(pDistanceArray, vizsgalt_szam, size1);
+        vizsgalt_szam++;
     }
-    */
 }
 
-
-
-
-
-
-void countOccurrences2(int* pDistanceArray, int distanceCount, int* pValueCounterArray, int upperLimit)
+void readArray(int* dinamikusTomb, int size)
 {
-
-
     int i = 0;
-    int number = 1;
-    while (i < distanceCount)
+    while (i < size)
     {
-        if (pDistanceArray[i]==number)
-        {
-            cout << "x" << endl;
-            pValueCounterArray[number] = pValueCounterArray[number] + 1;
-        }
+        cout << i << "  : " << dinamikusTomb[i] <<" db" << endl;
         i++;
     }
-
-    i = 0;
-    while (i<distanceCount)
-    {
-        cout << pValueCounterArray[i] << endl;
-        i++;
-    }
-
-
 }
