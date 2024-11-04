@@ -80,18 +80,7 @@ void calculatePrimeDistances(int* pArray, int numberOfPrimes, int* pDistanceArra
     cout << "number of distances calculated: " << count << endl;
     cout << "---" << endl;
 }
-void writePrimeDistancesToFile(int* pDistanceArray, int count)
-{
-    ofstream outPut;
-    outPut.open("distances.txt");
-    int i = 0;
-    while (i < count)
-    {
-        outPut << pDistanceArray[i] << endl;
-        i++;
-    }
-    outPut.close();
-}
+
 
 
 
@@ -128,6 +117,22 @@ void segedFuggveny(int* pDistanceArray, int distanceCount, int* pValueCounterArr
     }
 }
 
+
+void writePrimeDistancesToFile(int* pDistanceArray, int count)
+{
+    ofstream outPut;
+    outPut.open("distances.txt");
+    int i = 0;
+    while (i < count)
+    {
+        outPut <<i<<". " << pDistanceArray[i] << endl;
+        i++;
+    }
+    outPut.close();
+}
+
+
+
 void readArray(int* pDistanceArray, int distanceCount)
 {
     int i = 0;
@@ -155,12 +160,14 @@ int main()
 
     calculatePrimeDistances(pArray, numberOfPrimes, pDistanceArray);
 
-    writePrimeDistancesToFile(pDistanceArray, numberOfPrimes-1);
+    
 
     int* pValueCounterArray = new int[numberOfPrimes-1];
 
 
     segedFuggveny(pDistanceArray, numberOfPrimes-1, pValueCounterArray);
+
+    writePrimeDistancesToFile(pValueCounterArray, numberOfPrimes - 1);
 
     readArray(pValueCounterArray, numberOfPrimes-1);
 
