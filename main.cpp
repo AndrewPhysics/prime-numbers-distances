@@ -2,46 +2,6 @@
 #include <fstream>
 using namespace std;
 //function prototypes
-int getNumber();
-int primeFinder(int numberToScan);
-int primeNumberSorter(int* pArray, int upperLimit);
-int calculatePrimeDistances(int* pArray, int numberOfPrimes, int* pDistanceArray);
-void writePrimeDistancesToFile(int* pDistanceArray, int count);
-int szamoloFuggveny(int* pDistanceArray, int vizsgalt_szam, int distanceCount);
-void segedFuggveny(int* pDistanceArray, int distanceCount, int* dinamikusTomb, int upperLimit);
-void readArray(int kiindulasi_tomb[], int size);
-
-
-
-
-
-
-int main()
-{
-    int upperLimit = getNumber();
-    int* pArray = new int[upperLimit];
-
-    int numberOfPrimes = primeNumberSorter(pArray, upperLimit);
-    cout << "---" << endl;
-
-    int* pDistanceArray = new int[numberOfPrimes - 1];
-
-    int distanceCount = calculatePrimeDistances(pArray, numberOfPrimes, pDistanceArray);
-
-    //writePrimeDistancesToFile(pDistanceArray, distanceCount);
-
-    int* pValueCounterArray = new int[distanceCount];
-
-
-    segedFuggveny(pDistanceArray, distanceCount, pValueCounterArray, upperLimit);
-
-    readArray(pValueCounterArray, upperLimit);
-
-    delete[] pArray;
-    delete[] pDistanceArray;
-    delete[] pValueCounterArray;
-}
-
 int getNumber()
 {
     int upperLimit = 0;
@@ -136,9 +96,9 @@ void writePrimeDistancesToFile(int* pDistanceArray, int count)
 
 
 
-int szamoloFuggveny(int* pDistanceArray, int vizsgalt_szam, int distanceCount)
+int szamoloFuggveny(int* pDistanceArray, int vizsgalt_szam, int numberOfPrimes)
 {
-    int size = distanceCount;
+    int size = numberOfPrimes;
     int i = 0;
     int count = 0;
     while (i < size)//Megszámolja egy adott szám előfordulását
@@ -151,18 +111,21 @@ int szamoloFuggveny(int* pDistanceArray, int vizsgalt_szam, int distanceCount)
     }
     return count;
 }
-void segedFuggveny(int* pDistanceArray, int distanceCount, int* dinamikusTomb, int upperLimit)
+void segedFuggveny(int* pDistanceArray, int distanceCount, int* dinamikusTomb, int numberOfPrimes)
 {
-    int size1 = distanceCount;
-    int size2 = upperLimit;
+
+
     int vizsgalt_szam = 0;
-    while (vizsgalt_szam < size2)
+    while (vizsgalt_szam < numberOfPrimes)
     {
         //trükk: A vizsgált szám változónak 2 szerepe van:
         //1. átadjuk a számoló függvénynek mint keresett értéket
         //2. indexeli a dinamikus tömböt
         //3. ciklus változóként is felhasználjuk
-        dinamikusTomb[vizsgalt_szam] = szamoloFuggveny(pDistanceArray, vizsgalt_szam, size1);
+
+        //Eredmeny: A vizsgalt_szam adik helyre beírja, hogy a vizsgált szám hányszor fordul elő
+
+        dinamikusTomb[vizsgalt_szam] = szamoloFuggveny(pDistanceArray, vizsgalt_szam, distanceCount);
         vizsgalt_szam++;
     }
 }
@@ -172,7 +135,39 @@ void readArray(int* dinamikusTomb, int size)
     int i = 0;
     while (i < size)
     {
-        cout << i << "  : " << dinamikusTomb[i] <<" db" << endl;
+        cout << i << "  : " << dinamikusTomb[i] << " db" << endl;
         i++;
     }
 }
+
+
+
+
+
+
+int main()
+{
+    int upperLimit = getNumber();
+    int* pArray = new int[upperLimit];
+
+    int numberOfPrimes = primeNumberSorter(pArray, upperLimit);
+    cout << "---" << endl;
+
+    int* pDistanceArray = new int[numberOfPrimes];
+
+    int distanceCount = calculatePrimeDistances(pArray, numberOfPrimes, pDistanceArray);
+
+    //writePrimeDistancesToFile(pDistanceArray, distanceCount);
+
+    int* pValueCounterArray = new int[numberOfPrimes];
+
+
+    segedFuggveny(pDistanceArray, distanceCount, pValueCounterArray, numberOfPrimes);
+
+    readArray(pValueCounterArray, numberOfPrimes);
+
+    delete[] pArray;
+    delete[] pDistanceArray;
+    delete[] pValueCounterArray;
+}
+
