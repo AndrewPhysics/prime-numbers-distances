@@ -14,8 +14,8 @@ This function calculates the distance between 2 consecutive prime numbers using 
 5. counting function and helper function:
 These 2 functions count the occurrences of prime distances.
 The examined number variable has 2 roles:
-1. we pass it to the calculation function as the searched value
-2. it indexes the dynamic array
-3. we also use it as a loop variable
+-we pass it to the calculation function as the searched value
+-it indexes the dynamic array
+-we also use it as a loop variable
 Result: The number of times the distance occurs is entered in the appropriate place.
 The frequency of the distances is stored in another dynamic array. A histogram can be made from this later.
