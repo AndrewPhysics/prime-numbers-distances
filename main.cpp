@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
-//function prototypes
 int getNumber()
 {
     int upperLimit = 0;
@@ -9,7 +8,6 @@ int getNumber()
     cin >> upperLimit;
     return upperLimit;
 }
-
 int primeFinder(int numberToScan)
 {
     int divisor = 2;
@@ -30,7 +28,6 @@ int primeFinder(int numberToScan)
         return 0;
     }
 }
-
 int primeNumberSorter(int* pArray, int upperLimit)
 {
     int i = 2;
@@ -61,7 +58,6 @@ int primeNumberSorter(int* pArray, int upperLimit)
     cout << "number of primes found: " << count << endl;
     return count;
 }
-//The pArray contains the prime numbers found.
 void calculatePrimeDistances(int* pArray, int numberOfPrimes, int* pDistanceArray)
 {
     cout << "Calculated distances between primes: " << endl;
@@ -80,10 +76,6 @@ void calculatePrimeDistances(int* pArray, int numberOfPrimes, int* pDistanceArra
     cout << "number of distances calculated: " << count << endl;
     cout << "---" << endl;
 }
-
-
-
-
 int szamoloFuggveny(int* pDistanceArray, int vizsgalt_szam, int distanceCount)
 {
     int i = 0;
@@ -100,24 +92,13 @@ int szamoloFuggveny(int* pDistanceArray, int vizsgalt_szam, int distanceCount)
 }
 void segedFuggveny(int* pDistanceArray, int distanceCount, int* pValueCounterArray)
 {
-
-
     int vizsgalt_szam = 0;
     while (vizsgalt_szam < distanceCount)
     {
-        //trükk: A vizsgált szám változónak 2 szerepe van:
-        //1. átadjuk a számoló függvénynek mint keresett értéket
-        //2. indexeli a dinamikus tömböt
-        //3. ciklus változóként is felhasználjuk
-
-        //Eredmeny: A vizsgalt_szam adik helyre beírja, hogy a vizsgált szám hányszor fordul elő
-
         pValueCounterArray[vizsgalt_szam] = szamoloFuggveny(pDistanceArray, vizsgalt_szam, distanceCount);
         vizsgalt_szam++;
     }
 }
-
-
 void writePrimeDistancesToFile(int* pDistanceArray, int count)
 {
     ofstream outPut;
@@ -125,14 +106,11 @@ void writePrimeDistancesToFile(int* pDistanceArray, int count)
     int i = 0;
     while (i < count)
     {
-        outPut <<i<<". " << pDistanceArray[i] << endl;
+        outPut << i << ". " << pDistanceArray[i] << endl;
         i++;
     }
     outPut.close();
 }
-
-
-
 void readArray(int* pDistanceArray, int distanceCount)
 {
     int i = 0;
@@ -142,35 +120,18 @@ void readArray(int* pDistanceArray, int distanceCount)
         i++;
     }
 }
-
-
-
-
-
-
 int main()
 {
     int upperLimit = getNumber();
     int* pArray = new int[upperLimit];
-
     int numberOfPrimes = primeNumberSorter(pArray, upperLimit);
     cout << "---" << endl;
-
     int* pDistanceArray = new int[numberOfPrimes];
-
     calculatePrimeDistances(pArray, numberOfPrimes, pDistanceArray);
-
-    
-
-    int* pValueCounterArray = new int[numberOfPrimes-1];
-
-
-    segedFuggveny(pDistanceArray, numberOfPrimes-1, pValueCounterArray);
-
+    int* pValueCounterArray = new int[numberOfPrimes - 1];
+    segedFuggveny(pDistanceArray, numberOfPrimes - 1, pValueCounterArray);
     writePrimeDistancesToFile(pValueCounterArray, numberOfPrimes - 1);
-
-    readArray(pValueCounterArray, numberOfPrimes-1);
-
+    readArray(pValueCounterArray, numberOfPrimes - 1);
     delete[] pArray;
     delete[] pDistanceArray;
     delete[] pValueCounterArray;
