@@ -1,17 +1,17 @@
 Analyzing distances between prime numbers
-1. getNumber
+1. getNumber:
 This function requests the upper limit of the examined interval.
 
-2. primeFinder
+2. primeFinder:
 The task of this function is to determine whether the input parameter is a prime number based on integer division. If so, the return value is the prime number itself. If not, the function returns 0.
 
-3. primeNumberSorter
+3. primeNumberSorter:
 This function sorts the prime numbers. If the prime finder function returns non-zero, we store the given prime in a dynamic array. (pArray) The size of the dynamic array is the entire examined interval.
 
-4. calculatePrimeDistances
+4. calculatePrimeDistances:
 This function calculates the distance between 2 consecutive prime numbers using subtraction. The results are stored in a dynamic array.(pDistanceArray)
 
-5. counting function and helper function
+5. counting function and helper function:
 These 2 functions count the occurrences of prime distances.
 The examined number variable has 2 roles:
 1. we pass it to the calculation function as the searched value
