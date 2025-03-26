@@ -17,5 +17,6 @@ The examined number variable has 2 roles:
 -we pass it to the calculation function as the searched value
 -it indexes the dynamic array
 -we also use it as a loop variable
+
 Result: The number of times the distance occurs is entered in the appropriate place.
 The frequency of the distances is stored in another dynamic array. A histogram can be made from this later.
