@@ -76,13 +76,13 @@ void calculatePrimeDistances(int* pArray, int numberOfPrimes, int* pDistanceArra
     cout << "number of distances calculated: " << count << endl;
     cout << "---" << endl;
 }
-int szamoloFuggveny(int* pDistanceArray, int vizsgalt_szam, int distanceCount)
+int countingFunction(int* pDistanceArray, int numberToCheck, int distanceCount)
 {
     int i = 0;
     int count = 0;
-    while (i < distanceCount)//Megszámolja egy adott szám előfordulását
+    while (i < distanceCount)
     {
-        if (pDistanceArray[i] == vizsgalt_szam)
+        if (pDistanceArray[i] == numberToCheck)
         {
             count++;
         }
@@ -90,33 +90,33 @@ int szamoloFuggveny(int* pDistanceArray, int vizsgalt_szam, int distanceCount)
     }
     return count;
 }
-void segedFuggveny(int* pDistanceArray, int distanceCount, int* pValueCounterArray)
+void auxFunction(int* pDistanceArray, int distanceCount, int* pValueCounterArray)
 {
-    int vizsgalt_szam = 0;
-    while (vizsgalt_szam < distanceCount)
+    int numberToCheck = 0;
+    while (numberToCheck < distanceCount)
     {
-        pValueCounterArray[vizsgalt_szam] = szamoloFuggveny(pDistanceArray, vizsgalt_szam, distanceCount);
-        vizsgalt_szam++;
+        pValueCounterArray[numberToCheck] = countingFunction(pDistanceArray, numberToCheck, distanceCount);
+        numberToCheck++;
     }
 }
-void writePrimeDistancesToFile(int* pDistanceArray, int count)
+void writePrimeDistancesToFile(int* pValueCounterArray, int count)
 {
     ofstream outPut;
     outPut.open("distances.txt");
     int i = 0;
     while (i < count)
     {
-        outPut << i << ". " << pDistanceArray[i] << endl;
+        outPut << i << ". " << pValueCounterArray[i] << endl;
         i++;
     }
     outPut.close();
 }
-void readArray(int* pDistanceArray, int distanceCount)
+void readArray(int* pValueCounterArray, int distanceCount)
 {
     int i = 0;
     while (i < distanceCount)
     {
-        cout << i << "  : " << pDistanceArray[i] << " db" << endl;
+        cout << i << "  : " << pValueCounterArray[i] << " db" << endl;
         i++;
     }
 }
@@ -129,7 +129,7 @@ int main()
     int* pDistanceArray = new int[numberOfPrimes];
     calculatePrimeDistances(pArray, numberOfPrimes, pDistanceArray);
     int* pValueCounterArray = new int[numberOfPrimes - 1];
-    segedFuggveny(pDistanceArray, numberOfPrimes - 1, pValueCounterArray);
+    auxFunction(pDistanceArray, numberOfPrimes - 1, pValueCounterArray);
     writePrimeDistancesToFile(pValueCounterArray, numberOfPrimes - 1);
     readArray(pValueCounterArray, numberOfPrimes - 1);
     delete[] pArray;
