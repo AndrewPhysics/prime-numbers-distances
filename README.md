@@ -11,12 +11,12 @@ This function sorts the prime numbers. If the prime finder function returns non-
 4. calculatePrimeDistances:
 This function calculates the distance between 2 consecutive prime numbers using subtraction. The results are stored in a dynamic array.(pDistanceArray)
 
-5. counting function and helper function:
+5. counting function and aux function:
 These 2 functions count the occurrences of prime distances.
-The examined number variable has 2 roles:
--we pass it to the calculation function as the searched value
--it indexes the dynamic array
--we also use it as a loop variable
+The examined number variable has 3 roles:
+- we pass it to the calculation function as the searched value
+- it indexes the dynamic array
+- we also use it as a loop variable
 
-Result: The number of times the distance occurs is entered in the appropriate place.
+Result: The number of times the distance occurs is written in the appropriate place.
 The frequency of the distances is stored in another dynamic array. A histogram can be made from this later.
